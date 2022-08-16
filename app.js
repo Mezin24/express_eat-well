@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const { v4: uuidv4 } = require('uuid');
 const app = express();
 const path = require('path');
 
@@ -38,11 +39,25 @@ app.post('/recommend', (req, res) => {
   const filePath = path.join(__dirname, 'data', 'db.json');
   const restaurants = JSON.parse(fs.readFileSync(filePath));
   const newResturant = req.body;
-  newResturant.id = restaurants.length + 1;
+  newResturant.id = uuidv4();
   restaurants.push(newResturant);
   fs.writeFileSync(filePath, JSON.stringify(restaurants));
 
   res.redirect('/confirm');
+});
+
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id;
+
+  const filePath = path.join(__dirname, 'data', 'db.json');
+  const restaurants = JSON.parse(fs.readFileSync(filePath));
+  const restaurant = restaurants.find((item) => item.id === id);
+
+  if (!restaurant) {
+    return res.render('404');
+  }
+
+  res.render('restaurant-detail', restaurant);
 });
 
 app.listen(3000);

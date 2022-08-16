@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('includes/head') %>
+    <link rel="stylesheet" href="styles/restaurants.css" />
+  </head>
+  <body>
+    <%- include('includes/header') %> <%- include('includes/aside') %>
+    <main>
+      <h1><%= id %></h1>
+      <p><%= cuisine %> | <%= address %></p>
+      <p><%= description %></p>
+      <p><a href="<%= website %> ">View Website</a></p>
+    </main>
+  </body>
+</html>
