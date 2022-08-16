@@ -60,4 +60,16 @@ app.get('/restaurants/:id', (req, res) => {
   res.render('restaurant-detail', restaurant);
 });
 
+app.use((req, res) => {
+  res.render('404');
+});
+
+app.use((error, req, res, next) => {
+  res.render('500');
+});
+
+// app.get('/*', (req, res) => {
+//   res.render('404');
+// });
+
 app.listen(3000);
