@@ -1,4 +1,4 @@
-const fs = require('fs');
+const e = require('express');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 
@@ -6,10 +6,35 @@ const router = express.Router();
 const resData = require('../utils/restaurant-data');
 
 router.get('/restaurants', (req, res) => {
+  let { order } = req.query;
+
+  let nextOrder = 'desc';
+
+  if (order !== 'asc' && order !== 'desc') {
+    order = 'asc';
+  }
+
+  if (order === 'desc') {
+    nextOrder = 'asc';
+  }
+
   const restaurants = resData.getRestaurants();
+
+  restaurants.sort((a, b) => {
+    if (
+      (a.name > b.name && order === 'asc') ||
+      (order === 'desc' && b.name > a.name)
+    ) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
   res.render('restaurants', {
     restaurantsSum: restaurants.length,
     restaurants,
+    nextOrder,
   });
 });
 
